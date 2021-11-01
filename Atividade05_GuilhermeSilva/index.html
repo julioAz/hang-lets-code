@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Metadata -->
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="hangman,game" />
+    <meta name="description" content="Simple hangman game" />
+    <meta name="author" content="Guilherme Tavares da Silva" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/index.css" />
+
+    <!-- JS -->
+    <script type="module" src="js/index.js"></script>
+
+    <!-- Title -->
+    <title>Hangman Game</title>
+  </head>
+  <body>
+    <!-- Container - Centralized box -->
+    <div class="container">
+      <!-- Start frame - Instructions and play button -->
+      <div class="frame frame--start">
+        <h1 class="frame__title">Hangman Game</h1>
+        <p class="frame__lead">
+          Use the game keyboard to guess the word before your life expire!
+        </p>
+        <button id="btnPlay" class="btn frame__btn">Play</button>
+      </div>
+
+      <!-- End frame - Aftermath: win, lose, play again button -->
+      <div class="frame frame--end">
+        <h1 class="frame__title">Hangman Game</h1>
+        <p id="frameEndResult" class="frame__lead">You won/lost!</p>
+        <p class="frame__lead">
+          Correct word: <span class="frame__correctWord"></span>
+        </p>
+        <button id="btnPlayAgain" class="btn frame__btn">Play Again</button>
+      </div>
+
+      <!-- Game frame - Actual game: word (to be guessed), possible letters -->
+      <div class="frame frame--game">
+        <h1 class="game__title">Hangman Game</h1>
+
+        <!-- Word to be guessed -->
+        <ul class="game__word"></ul>
+
+        <!-- Guesses remaining -->
+        <p class="game__guesses">
+          Life (guesses remaining):
+          <span id="gameGuesses" class="game__hearts"></span>
+        </p>
+
+        <!-- Possible letters -->
+        <div class="game__keyboard"></div>
+      </div>
+    </div>
+  </body>
+</html>

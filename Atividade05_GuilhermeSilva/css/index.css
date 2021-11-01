@@ -1,0 +1,174 @@
+/* -------------------------------------------------------- */
+/* General - Variables */
+:root {
+  --clr-primary: hsl(0, 0%, 20%);
+  --clr-secondary: hsl(0, 0%, 30%);
+  --clr-dark: hsl(0, 0%, 10%);
+  --clr-light: hsl(0, 0%, 90%);
+
+  --clr-result-won: #2aad2a;
+  --clr-result-lost: #da3e3e;
+
+  --ff-sans: Arial, Helvetica, sans-serif;
+}
+
+/* -------------------------------------------------------- */
+/* Generable - Resets */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* -------------------------------------------------------- */
+/* Body - Centralized content */
+body {
+  font-family: var(--ff-sans);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  color: var(--clr-light);
+  background-color: var(--clr-primary);
+}
+
+/* -------------------------------------------------------- */
+/* Buttons - Configure everything, except sizes */
+button {
+  outline: none;
+  border: 1px solid var(--clr-dark);
+
+  color: var(--clr-light);
+  background-color: var(--clr-primary);
+
+  cursor: pointer;
+}
+
+button:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:disabled {
+  background-color: var(--clr-secondary);
+}
+
+/* -------------------------------------------------------- */
+/* Container - Centralized box */
+.container {
+  position: relative;
+
+  width: 50rem;
+  height: 30rem;
+}
+
+/* -------------------------------------------------------- */
+/* Frame - General layout */
+.frame {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  background-color: var(--clr-secondary);
+}
+
+.frame__correctWord {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.frame__btn {
+  padding: 0.5rem 1.5rem;
+}
+
+/* -------------------------------------------------------- */
+/* Frame - Start - Overlay (above everything IF displayed) */
+.frame--start {
+  display: flex;
+  z-index: 10;
+}
+
+/* -------------------------------------------------------- */
+/* Frame - End - Overlay (above everything IF displayed) */
+.frame--end {
+  display: none;
+  z-index: 10;
+}
+
+/* -------------------------------------------------------- */
+/* Frame - Game */
+.frame--game {
+  display: none;
+}
+
+.game__word {
+  list-style-type: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.game__letter {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+
+  margin: 0 0.5rem;
+  width: 1.5rem;
+
+  border-bottom: 2px solid var(--clr-light);
+}
+
+.game__keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  width: 80%;
+}
+
+.game__key {
+  font-size: 1rem;
+
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+
+.game__guesses {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.game__hearts {
+  font-size: 2rem;
+  color: var(--clr-result-lost);
+}
+
+.game__result {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.game__result--won {
+  color: var(--clr-result-won);
+}
+
+.game__result--lost {
+  color: var(--clr-result-lost);
+}

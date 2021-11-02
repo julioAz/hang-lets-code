@@ -1,0 +1,75 @@
+
+%fullwidth {
+  width: 100%;
+}
+
+%fullwindowidth {
+  width: 100vw;
+}
+
+%fullheight {
+  height: 100%;
+}
+
+%fullheightwindow {
+  height: 100vh;
+}
+
+%fullblock {
+  @extend
+    %fullwidth,
+    %fullheight;
+}
+
+%fullblockwindow {
+  @extend
+    %fullwindowidth,
+    %fullheightwindow;
+}
+
+@each $display in (inline, none, block, flex, grid) {
+  %display-#{$display} {
+    display: $display;
+  }
+}
+
+@each $position in (relative, absolute, fixed, static, inherit, initial) {
+  %position-#{$position} {
+    position: $position;
+  }
+}
+
+@each $justifyContent in (flex-start, center, flex-end, space-evenly, space-around, space-between) {
+  %justify-content-#{$justifyContent} {
+    @extend %display-flex;
+    justify-content: $justifyContent;
+  }
+}
+
+@each $alignContent in (flex-start, center, flex-end, space-evenly, space-around, space-between) {
+  %align-content-#{$alignContent} {
+    @extend %display-flex;
+    align-content: $alignContent;
+  }
+}
+
+@each $alignItems in (flex-start, center, flex-end, stretch) {
+  %align-items-#{$alignItems} {
+    @extend %display-flex;
+    align-items: $alignItems;
+  }
+}
+
+@each $flexDirection in (row, column, row-reverse, column-reverse) {
+  %flex-direction-#{$flexDirection} {
+    @extend %display-flex;
+    flex-direction: $flexDirection;
+  }
+}
+
+@each $flexWrap in (wrap, nowrap) {
+  %flex-wrap-#{$flexWrap} {
+    @extend %display-flex;
+    flex-wrap: $flexWrap;
+  }
+}

@@ -57,7 +57,7 @@ function escolheLetra(letra) {
         }
     }
 
-    if (acertou === false) {
+    if (!acertou) {
         imagem++;
         document.getElementById("forca").src = "img/forca-"+imagem+".png";
 

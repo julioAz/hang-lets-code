@@ -1,0 +1,24 @@
+
+.header {
+  height: 60px;
+  padding: 0 12px;
+  background-color: #333;
+  @extend %align-items-center, %justify-content-space-between;
+
+  &__hamburger {
+    width: 32px;
+    height: 25px;
+    cursor: pointer;
+    @extend
+      %flex-wrap-wrap,
+      %justify-content-center,
+      %align-content-space-between;
+
+    & > span {
+      height: 2px;
+      border-radius: 2px;
+      background-color: #fff;
+      @extend %fullwidth, %display-block;
+    }
+  }
+}

@@ -45,31 +45,32 @@ export class GameController {
     }
   };
 
-  handleGameWon = (correctWordLiteral) => {
-    this.view.displayResult(true, correctWordLiteral);
-  };
-
-  handleGameLost = (correctWordLiteral) => {
-    this.view.displayResult(false, correctWordLiteral);
-  };
-
   #evaluateGame = () => {
     // No more guesses remaining? Lost.
-    if (this.wrongGuesses >= 6) {
-      this.handleGameLost(this.word.literal);
-    }
+    const won = this.wrongGuesses < 6 && this.word.letters.some(letter => !letter.isGuessed);
 
-    // All letters were guessed?
-    let won = true;
-    for (let letter of this.word.letters) {
-      if (!letter.isGuessed) {
-        won = false;
-      }
-    }
+    this.view.displayResult(won, this.word.literal);
 
-    // Won.
-    if (won) {
-      this.handleGameWon(this.word.literal);
-    }
+    // if (this.wrongGuesses >= 6) {
+    //   this.view.displayResult(this.word.literal);
+
+    //   return;
+    // }
+
+    // // Won.
+    // if (this.word.letters.some(letter => !letter.isGuessed)) {
+    //   this.handleGameWon(this.word.literal);
+    // }
+
+
+
+    // remove below
+    // // // All letters were guessed?
+    // // let won = true;
+    // // for (let letter of this.word.letters) {
+    // //   if (!letter.isGuessed) {
+    // //     won = false;
+    // //   }
+    // // }
   };
 }

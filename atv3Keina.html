@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+</body>
+
+<script>
+
+    let palavra;
+
+    function display(letras_erradas, palavra_display, vidas) {
+        return prompt(`Quem é esse Pokémon? ${palavra_display}\nLetras não encaixadas: ${letras_erradas}\n${indicadorVida[MAX_VIDAS - vidas]}`);
+    }
+
+    function game() {
+
+        let t = Math.floor(Math.random() * (151 - 4)); // Pokémons aleatórios da primeira geracao
+        $.ajax(`https://pokeapi.co/api/v2/pokemon?limit=4&offset=${t}`).then(function (data) {
+
+            for (pok of data.results) {
+
+                palavra = pok.name;
+                console.log(palavra);
+                
+                let palavra_display = new Array(palavra.length);
+                palavra_display.fill('_');
+                
+                let letras_erradas = [];
+                let vidas = MAX_VIDAS;
+                
+                while (true) {
+                    let letra = display(letras_erradas, palavra_display, vidas);
+                    letra.toLowerCase();
+
+                    if (alfabeto.includes(letra)){
+
+                        if (palavra.includes(letra)){
+
+                            for (let i = 0; i < palavra.length; i++) {
+                                if (palavra[i] == letra)
+                                palavra_display[i] = letra;
+                            }
+                            
+                            // checar se palavra está completa
+                            let completa = true;
+                            for (letra of palavra_display) {
+                                if (letra == '_') {
+                                    completa = false;
+                                    break;
+                                }
+                            }
+
+                            if (completa) {
+                                alert(`Parabéns! Você acertou o Pokémon ${palavra}!\nJogar novamente?`);
+                                break;
+                            }
+
+                        } else {
+                            letras_erradas.push(letra);
+                            vidas--;
+
+                            if (vidas <= 0) {
+
+                                alert(`GAME OVER\nO Pokémon era: ${palavra}\n${indicadorVida[MAX_VIDAS - vidas]}`);
+                                return;
+
+                            }
+                        }
+                        
+                    } else alert('Caracter inválido, tente outro:');
+                }
+            }
+            alert("Parabéns, você descobriu os 4 Pokémons!\nRecarregue a página para encontrar mais");
+        });
+    }
+
+    const alfabeto = ['a', 'b', 'c', 'd','e', 'f', 'g', 'h','i', 'j', 'k', 'l','m', 'n', 'o', 'p','q', 'r', 's', 't','u', 'v', 'w', 'x','y', 'z'];
+    const indicadorVida = [
+            `_______           
+        |
+        |
+        |
+        |   
+        `, 
+        `_______           
+        |          😁
+        |    
+        |  
+        |   
+        `, 
+        `_______           
+        |         😁
+        |         /|\\
+        |   
+        | 
+        `, 
+        `_______           
+        |         😮
+        |         /|\\
+        |          |
+        |  
+        `, 
+        `_______           
+        |         😲
+        |         /|\\
+        |          |
+        |         / \\
+        `
+        ];
+
+    const MAX_VIDAS = indicadorVida.length - 1;
+
+    game();
+
+</script>
+</html>

@@ -22,6 +22,8 @@ export class GameController {
   };
 
   handleLetterGuess = (letterGuess) => {
+    this.handleLettersListChange(this.word.letters, this.wrongGuesses);
+
     let guessed = false;
     for (let letter of this.word.letters) {
       if (letter.char === letterGuess) {
@@ -38,6 +40,8 @@ export class GameController {
   };
 
   handleWordGuess = (wordGuess) => {
+    this.handleLettersListChange(this.word.letters, this.wrongGuesses);
+
     if (wordGuess === this.word.literal) {
       this.handleGameWon(this.word.literal);
     } else {
@@ -47,7 +51,7 @@ export class GameController {
 
   #evaluateGame = () => {
     // No more guesses remaining? Lost.
-    const won = this.wrongGuesses < 6 && this.word.letters.some(letter => !letter.isGuessed);
+    const won = this.wrongGuesses < 6 && this.word.letters.every(letter => letter.isGuessed);
 
     this.view.displayResult(won, this.word.literal);
 

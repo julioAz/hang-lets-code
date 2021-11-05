@@ -6,22 +6,20 @@ export class Word {
 
   constructor() {
     this.pokemons = null;
-    // TODO: load game state from localStorage if any.
-    this.localToken = "PROJETO__GRUPO-LETSCODE";
-
-    this.tokenExists = localStorage.getItem(this.#localToken);
+    this.#localToken = "PROJETO__GRUPO-LETSCODE";
+    this.#tokenExists = localStorage.getItem(this.#localToken);
   }
 
   async init() {
-    // TODO: fetch word from external resource (JSON/API) and save it
-    // as an array of objects { char: string, isGuessed: boolean },
-    // see the method `#save` below.
-
     this.pokemons = await this.loadPokemons();
+
+    const randomPokemon = this.pokemons[Math.floor(Math.random() * (898 - 1))];
+
+    this.#save(randomPokemon.name);
   }
 
   async loadPokemons () {
-    if (!this.tokenExists) {
+    if (!this.#tokenExists) {
       const poke = [];
 
       for (let i = 1, len = 898; i < len; i++) {
@@ -40,7 +38,7 @@ export class Word {
 
       return pokemons;
     } else {
-      return JSON.parse(this.tokenExists);
+      return JSON.parse(this.#tokenExists);
     }
   }
 
@@ -48,11 +46,8 @@ export class Word {
     this.onLettersListChange = handler;
   }
 
-  // This method must be called after every change to the current word state.
   #commit() {
-    // TODO: persist current game state/result in localStorage
-
-    this.onLettersListChange();
+    this.onLettersListChange(this.letters);
   }
 
   #save(fetchedWord) {

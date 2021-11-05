@@ -17,9 +17,6 @@ export class DOM {
   }
 
   bindPlay(handler) {
-    // TODO: determine game `level`
-    // const level = ...;
-
     [this.btnPlay, this.btnPlayAgain].forEach((button) => {
       button.addEventListener("click", async (event) => {
         event.preventDefault();
@@ -28,8 +25,6 @@ export class DOM {
           this.#resetGame();
         }
 
-        // TODO: add `level` parameter;
-        // handler(level);
         await handler();
       });
     });
@@ -37,28 +32,30 @@ export class DOM {
 
   bindLetterGuess(handler) {
     // TODO: addEventListener to listen for letter guesses
+    // handler(guessedLetter);
   }
 
   bindWordGuess(handler) {
     // TODO: addEventListener to listen for word guesses
+    // handler(guessedWord);
   }
 
-  createKeyboard () {
+  createKeyboard() {
     const letras = "abcdefghijklmnopqrstuvwxyz".split("");
 
     letras.forEach(letra => {
       let botao = document.createElement("button");
       botao.setAttribute('class', 'btn btn-dark')
-      let letra = document.createTextNode(letras);
+      let letraTexto = document.createTextNode(letra);
       
-      botao.appendChild(letra);
+      botao.appendChild(letraTexto);
       botao.setAttribute('id', letras);
 
       this.gameKeyboard.appendChild(botao);
     });
   }
 
-  displayFrame (frame) {
+  displayFrame(frame) {
     switch (frame) {
       case "start":
         this.frameStart.style.display = "flex";
@@ -78,26 +75,22 @@ export class DOM {
     }
   }
 
-  displayWord (letters) {
-    this.gameWord.innerHTML = letters
-      .reduce((acc, cur) => {
+  displayWord(letters) {
+    console.log(letters);
+
+    this.gameWord.innerHTML = letters.map((letter) => {
         return `
-          <li class="game__letter"> ${cur.isGuessed ? cur.char : ""} </li>
+          <li class="game__letter">${letter.isGuessed ? letter.char : ""}</li>
         `;
       }, "")
       .join('');
   }
 
-  displayHangman () {
-    // actions
+  displayHangman(wrongGuesses) {
+    // TODO: display the gallows pole and hangman parts based 
+    // on the number of wrong guesses, `wrongGuesses`
   }
 
-  /**
-   * Display the game frame, `gameFrame`, with the current game state.
-   *
-   * @param {Array<{ char: string, isGuessed: boolean}>} letters array of letters composing the game `word`
-   * @param {number} wrongGuesses number of wrong guesses
-   */
   displayGame(letters, wrongGuesses) {
     this.displayFrame("game");
 
@@ -106,12 +99,6 @@ export class DOM {
     this.displayHangman(wrongGuesses);
   }
 
-  /**
-   * Display the final frame, `endFrame`, with the game result.
-   *
-   * @param {boolean} won `true` if game won, `false` otherwise
-   * @param {string} correctWordLiteral the correct word
-   */
   displayResult(won, correctWordLiteral) {
     this.displayFrame("end");
 

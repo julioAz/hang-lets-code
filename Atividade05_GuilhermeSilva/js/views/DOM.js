@@ -7,11 +7,13 @@ export class DOM {
     this.frameGame = document.querySelector(".frame--game");
     this.frameEnd = document.querySelector(".frame--end");
     this.frameEndResult = document.querySelector("#frameEndResult");
+    this.frameEndResultImg = document.querySelector("#frameEndResultImg");
     this.frameEndCorrectWord = document.querySelector(".frame__correctWord");
 
     this.gameWord = document.querySelector(".game__word");
     this.gameKeyboard = document.querySelector(".game__keyboard");
-    this.gameGuesses = document.querySelector("#gameGuesses");
+    this.gameHamgmanImg = document.querySelector("#gameHamgmanImg");
+    this.wordGuessForm = document.querySelector("#wordGuessForm");
 
     this.createKeyboard();
   }
@@ -31,25 +33,35 @@ export class DOM {
   }
 
   bindLetterGuess(handler) {
-    // TODO: addEventListener to listen for letter guesses
-    // handler(guessedLetter);
+    this.gameKeyboard.addEventListener('click', event => {
+      const { target } = event;
+
+      if (target.classList.contains('game__key')) {
+        handler(target.id);
+
+        target.classList.add('game__key--disabled');
+      }
+    });
   }
 
-  bindWordGuess(handler) {
-    // TODO: addEventListener to listen for word guesses
-    // handler(guessedWord);
+  bindWordGuess (handler) {
+    this.wordGuessForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      handler(event.target.wordGuessInput.value.toUpperCase());
+    });
   }
 
   createKeyboard() {
-    const letras = "abcdefghijklmnopqrstuvwxyz".split("");
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     letras.forEach(letra => {
       let botao = document.createElement("button");
-      botao.setAttribute('class', 'btn btn-dark')
+      botao.setAttribute('class', 'game__key');
       let letraTexto = document.createTextNode(letra);
       
       botao.appendChild(letraTexto);
-      botao.setAttribute('id', letras);
+      botao.setAttribute('id', `${letra.toUpperCase()}`);
 
       this.gameKeyboard.appendChild(botao);
     });
@@ -87,8 +99,7 @@ export class DOM {
   }
 
   displayHangman(wrongGuesses) {
-    // TODO: display the gallows pole and hangman parts based 
-    // on the number of wrong guesses, `wrongGuesses`
+    this.gameHamgmanImg.src = `./img/forca-${wrongGuesses}.png`;
   }
 
   displayGame(letters, wrongGuesses) {
@@ -102,6 +113,10 @@ export class DOM {
   displayResult(won, correctWordLiteral) {
     this.displayFrame("end");
 
+    this.frameEndResultImg.src = won
+      ? "./img/luis.png"
+      : "./img/cris.png";
+
     this.frameEndResult.innerHTML = won ? "YOU WON" : "YOU LOSE";
     this.frameEndResult.classList.add(`game__result--${won ? 'won' : 'lost'}`);
     this.frameEndCorrectWord.innerHTML = correctWordLiteral;
@@ -109,5 +124,11 @@ export class DOM {
 
   #resetGame () {
     this.frameEndResult.classList.remove('game__result--won', 'game__result--lost');
+
+    document.querySelectorAll('.game__key').forEach(button => {
+      button.classList.remove('game__key--disabled');
+    });
+
+    this.wordGuessForm.wordGuessInput.value = "";
   }
 }

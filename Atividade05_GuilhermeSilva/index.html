@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
-    <!-- Metadata -->
     <meta charset="UTF-8" />
     <meta name="keywords" content="hangman,game" />
     <meta name="description" content="Simple hangman game" />
@@ -15,28 +14,33 @@
     <script type="module" src="js/index.js"></script>
 
     <!-- Title -->
-    <title>Hangman Game</title>
+    <title>Hangmon Game</title>
   </head>
   <body>
     <!-- Container - Centralized box -->
     <div class="container">
       <!-- Start frame - Instructions and play button -->
       <div class="frame frame--start">
-        <h1 class="frame__title">Hangman Game</h1>
+        <h1 class="frame__title">Hangmon Game</h1>
         <p class="frame__lead">
           Use the game keyboard to guess the word before your life expire!
         </p>
-        <button id="btnPlay" class="btn frame__btn">Play</button>
+        <button id="btnPlay" class="btn frame__btn" disabled>Play</button>
       </div>
 
       <!-- End frame - Aftermath: win, lose, play again button -->
       <div class="frame frame--end">
         <h1 class="frame__title">Hangman Game</h1>
-        <p id="frameEndResult" class="frame__lead">You won/lost!</p>
+        <p id="frameEndResult" class="frame__lead">
+          <!-- tells when win or lose -->
+        </p>
+        <figure>
+          <img id="frameEndResultImg" src="" alt="" />
+        </figure>
         <p class="frame__lead">
           Correct word: <span class="frame__correctWord"></span>
         </p>
-        <button id="btnPlayAgain" class="btn frame__btn">Play Again</button>
+        <button id="btnPlayAgain" class="btn frame__btn" disabled>Play Again</button>
       </div>
 
       <!-- Game frame - Actual game: word (to be guessed), possible letters -->
@@ -48,12 +52,21 @@
 
         <!-- Guesses remaining -->
         <p class="game__guesses">
-          Life (guesses remaining):
-          <span id="gameGuesses" class="game__hearts"></span>
+          <figure>
+            <img id="gameHamgmanImg" src="" alt="boneco" />
+          </figure>
         </p>
 
         <!-- Possible letters -->
         <div class="game__keyboard"></div>
+
+        <!-- Possible letters -->
+        <div class="game__wordGuess">
+          <form class="game__wordGuess--wrapper" id="wordGuessForm">
+            <input type="text" id="wordGuessInput" />
+            <button class="game__key" id="wordGuessButton">GUESS WORD</button>
+          </form>
+        </div>
       </div>
     </div>
   </body>

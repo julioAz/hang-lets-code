@@ -150,6 +150,11 @@ button:disabled {
   margin: 0.5rem;
 }
 
+.game__key--disabled {
+  opacity: .8;
+  pointer-events: none;
+}
+
 .game__guesses {
   font-size: 1rem;
   font-weight: bold;
@@ -157,6 +162,7 @@ button:disabled {
 
 .game__hearts {
   font-size: 2rem;
+  display: block;
   color: var(--clr-result-lost);
 }
 
@@ -171,4 +177,9 @@ button:disabled {
 
 .game__result--lost {
   color: var(--clr-result-lost);
+}
+
+
+#wordGuessInput {
+  padding: 4px 6px;
 }

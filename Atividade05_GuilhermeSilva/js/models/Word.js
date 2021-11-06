@@ -15,7 +15,9 @@ export class Word {
 
     const randomPokemon = this.pokemons[Math.floor(Math.random() * (898 - 1))];
 
-    this.#save(randomPokemon.name);
+    // const randomPokemonName = 
+
+    this.#save(randomPokemon.name.toUpperCase());
   }
 
   async loadPokemons () {
@@ -52,6 +54,8 @@ export class Word {
 
   #save(fetchedWord) {
     this.literal = fetchedWord;
+
+    this.wrongGuesses = 0;
 
     this.letters = Array.from(fetchedWord).map((letter) => {
       return {

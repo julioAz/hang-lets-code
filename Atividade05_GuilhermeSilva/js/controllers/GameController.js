@@ -2,7 +2,6 @@ export class GameController {
   constructor(word, view) {
     this.word = word;
     this.view = view;
-    this.wrongGuesses = 0;
 
     this.word.bindLettersListChange(this.handleLettersListChange);
 
@@ -18,12 +17,10 @@ export class GameController {
   handlePlay = async (level) => {
     await this.word.init(level);
 
-    this.handleLettersListChange(this.word.letters, this.wrongGuesses);
+    this.handleLettersListChange(this.word.letters, this.word.wrongGuesses);
   };
 
   handleLetterGuess = (letterGuess) => {
-    this.handleLettersListChange(this.word.letters, this.wrongGuesses);
-
     let guessed = false;
     for (let letter of this.word.letters) {
       if (letter.char === letterGuess) {
@@ -33,48 +30,29 @@ export class GameController {
     }
 
     if (!guessed) {
-      this.wrongGuesses++;
+      this.word.wrongGuesses++;
     }
+
+    this.handleLettersListChange(this.word.letters, this.word.wrongGuesses);
 
     this.#evaluateGame();
   };
 
   handleWordGuess = (wordGuess) => {
-    this.handleLettersListChange(this.word.letters, this.wrongGuesses);
+    //this.handleLettersListChange(this.word.letters, this.word.wrongGuesses);
 
-    if (wordGuess === this.word.literal) {
-      this.handleGameWon(this.word.literal);
-    } else {
-      this.handleGameLost(this.word.literal);
-    }
+    this.view.displayResult(wordGuess === this.word.literal, this.word.literal);
   };
 
   #evaluateGame = () => {
     // No more guesses remaining? Lost.
-    const won = this.wrongGuesses < 6 && this.word.letters.every(letter => letter.isGuessed);
+    if (this.word.wrongGuesses >= 5) {
+      this.view.displayResult(false, this.word.literal);
+    }
 
-    this.view.displayResult(won, this.word.literal);
-
-    // if (this.wrongGuesses >= 6) {
-    //   this.view.displayResult(this.word.literal);
-
-    //   return;
-    // }
-
-    // // Won.
-    // if (this.word.letters.some(letter => !letter.isGuessed)) {
-    //   this.handleGameWon(this.word.literal);
-    // }
-
-
-
-    // remove below
-    // // // All letters were guessed?
-    // // let won = true;
-    // // for (let letter of this.word.letters) {
-    // //   if (!letter.isGuessed) {
-    // //     won = false;
-    // //   }
-    // // }
+    // All letters were guessed? Won.
+    if (this.word.letters.every((letter) => letter.isGuessed)) {
+      this.view.displayResult(true, this.word.literal);
+    }
   };
 }

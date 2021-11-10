@@ -12,6 +12,12 @@ async function main () {
   const { btnPlay, btnPlayAgain } = game.view;
 
   [btnPlay, btnPlayAgain].forEach(el => el.disabled = 0);
+
+  if(localStorage.getItem("gameState")) {
+
+    btnPlay.click();
+  }
+
 }
 
 main();

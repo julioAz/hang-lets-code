@@ -3,6 +3,8 @@ export class DOM {
     this.btnPlay = document.querySelector("#btnPlay");
     this.btnPlayAgain = document.querySelector("#btnPlayAgain");
 
+    this.inputPlayerName = document.querySelector("#playerName");
+
     this.frameStart = document.querySelector(".frame--start");
     this.frameGame = document.querySelector(".frame--game");
     this.frameEnd = document.querySelector(".frame--end");
@@ -19,15 +21,18 @@ export class DOM {
   }
 
   bindPlay(handler) {
+
     [this.btnPlay, this.btnPlayAgain].forEach((button) => {
       button.addEventListener("click", async (event) => {
         event.preventDefault();
+        
+        const playerName = this.inputPlayerName.value || "Player";
 
         if (button.id === 'btnPlayAgain') {
           this.#resetGame();
         }
 
-        await handler();
+        await handler(playerName);
       });
     });
   }

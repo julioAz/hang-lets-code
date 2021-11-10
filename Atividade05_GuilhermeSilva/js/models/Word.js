@@ -3,6 +3,7 @@ export class Word {
   #tokenExists;
   static ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   static BASE_URL = "https://pokeapi.co/api/v2/pokemon";
+  static maxPokemons = 150 ;
 
   constructor() {
     this.pokemons = null;
@@ -10,21 +11,45 @@ export class Word {
     this.#tokenExists = localStorage.getItem(this.#localToken);
   }
 
-  async init() {
-    this.pokemons = await this.loadPokemons();
+  async init(playerName) {
 
-    const randomPokemon = this.pokemons[Math.floor(Math.random() * (898 - 1))];
+    const gameState = JSON.parse(localStorage.getItem("gameState") ?? "null");
+    
+    if(gameState){
+      this.playerName = gameState.playerName;
+      this.literal = gameState.literal;
+      this.wrongGuesses = gameState.wrongGuesses;
+      this.letters = gameState.letters;
+      this.timerStart = gameState.timerStart;
 
-    // const randomPokemonName = 
+      return
+    }
 
-    this.#save(randomPokemon.name.toUpperCase());
+    this.pokemons = JSON.parse(localStorage.getItem(this.#localToken));
+    const randomPokemon = this.pokemons[Math.floor(Math.random() * (Word.maxPokemons - 1))].name.toUpperCase();
+
+    this.playerName = playerName;
+
+    this.literal = randomPokemon;
+
+    this.wrongGuesses = 0;
+
+    this.letters = Array.from(randomPokemon).map((letter) => {
+      return {
+        char: letter,
+        isGuessed: false,
+      };
+    });
+
+    this.timerStart = Date.now();
+
   }
 
   async loadPokemons () {
     if (!this.#tokenExists) {
       const poke = [];
 
-      for (let i = 1, len = 898; i < len; i++) {
+      for (let i = 1, len = Word.maxPokemons; i < len; i++) {
         poke.push(
           fetch(`${Word.BASE_URL}/${i}`)
             .then(response => response.json())
@@ -44,24 +69,22 @@ export class Word {
     }
   }
 
-  bindLettersListChange(handler) {
-    this.onLettersListChange = handler;
+  calculateScore() {
+   this.score = (this.literal.length - this.wrongGuesses) * (Date.now() - this.timerStart) / 1000; 
   }
 
-  #commit() {
-    this.onLettersListChange(this.letters);
+  saveState() {
+    localStorage.setItem("gameState", JSON.stringify({
+      literal: this.literal,
+      wrongGuesses: this.wrongGuesses,
+      letters: this.letters,
+      timerStart: this.timerStart, 
+      playerName: this.playerName
+    }));
   }
 
-  #save(fetchedWord) {
-    this.literal = fetchedWord;
-
-    this.wrongGuesses = 0;
-
-    this.letters = Array.from(fetchedWord).map((letter) => {
-      return {
-        char: letter,
-        isGuessed: false,
-      };
-    });
+  clearState(){
+    localStorage.removeItem("gameState");
   }
+
 }

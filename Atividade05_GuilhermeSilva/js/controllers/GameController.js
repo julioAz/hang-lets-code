@@ -3,8 +3,6 @@ export class GameController {
     this.word = word;
     this.view = view;
 
-    this.word.bindLettersListChange(this.handleLettersListChange);
-
     this.view.bindPlay(this.handlePlay);
     this.view.bindLetterGuess(this.handleLetterGuess);
     this.view.bindWordGuess(this.handleWordGuess);
@@ -12,10 +10,11 @@ export class GameController {
 
   handleLettersListChange = (letters, wrongGuesses) => {
     this.view.displayGame(letters, wrongGuesses);
+    this.word.saveState();
   };
 
-  handlePlay = async (level) => {
-    await this.word.init(level);
+  handlePlay = async (playerName) => {
+    await this.word.init(playerName);
 
     this.handleLettersListChange(this.word.letters, this.word.wrongGuesses);
   };
@@ -39,20 +38,28 @@ export class GameController {
   };
 
   handleWordGuess = (wordGuess) => {
-    //this.handleLettersListChange(this.word.letters, this.word.wrongGuesses);
-
     this.view.displayResult(wordGuess === this.word.literal, this.word.literal);
   };
 
+  handleGameWon = () => {
+    this.view.displayResult(true, this.word.literal);
+    this.word.calculateScore();
+    this.word.clearState();
+  }
+
+  handleGameLost = () => {
+    this.view.displayResult(false, this.word.literal);
+    this.word.clearState();
+  }
+
   #evaluateGame = () => {
-    // No more guesses remaining? Lost.
+    
     if (this.word.wrongGuesses >= 5) {
-      this.view.displayResult(false, this.word.literal);
+      this.handleGameLost();
     }
 
-    // All letters were guessed? Won.
     if (this.word.letters.every((letter) => letter.isGuessed)) {
-      this.view.displayResult(true, this.word.literal);
+      this.handleGameWon();
     }
   };
 }

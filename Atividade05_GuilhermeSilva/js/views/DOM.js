@@ -17,6 +17,9 @@ export class DOM {
     this.gameHamgmanImg = document.querySelector("#gameHamgmanImg");
     this.wordGuessForm = document.querySelector("#wordGuessForm");
 
+    this.highScore = document.querySelector(".game__highScore");
+    this.highScoreList = document.querySelector(".game__highScore--list");
+
     this.createKeyboard();
   }
 

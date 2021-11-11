@@ -41,6 +41,7 @@ body {
 button {
   outline: none;
   border: 1px solid var(--clr-dark);
+  border-radius: 4px;
 
   color: var(--clr-light);
   background-color: var(--clr-primary);
@@ -179,7 +180,22 @@ button:disabled {
   color: var(--clr-result-lost);
 }
 
-
 #wordGuessInput {
   padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--clr-dark);
+  height: 36px;
+}
+
+#playerName {
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--clr-dark);
+}
+
+.game__highScore--list {
+  list-style: none;
+  font-size: 1rem;
+  text-align: center;
+  margin: 1rem auto;
 }

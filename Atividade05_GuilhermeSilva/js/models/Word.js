@@ -73,6 +73,11 @@ export class Word {
    this.score = (this.literal.length - this.wrongGuesses) * (Date.now() - this.timerStart) / 1000; 
   }
 
+  printScore() {
+    this.calculateScore();
+    this.highScoreList.innerHTML = `<li class="game__highScore--list--item">${this.playerName} - ${this.score}</li>`;
+  }
+
   saveState() {
     localStorage.setItem("gameState", JSON.stringify({
       literal: this.literal,

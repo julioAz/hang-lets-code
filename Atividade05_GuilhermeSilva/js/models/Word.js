@@ -9,6 +9,7 @@ export class Word {
     this.pokemons = null;
     this.#localToken = "PROJETO__GRUPO-LETSCODE";
     this.#tokenExists = localStorage.getItem(this.#localToken);
+    this.score = JSON.parse(localStorage.getItem("score") ?? "[]" );
   }
 
   async init(playerName) {
@@ -69,13 +70,28 @@ export class Word {
     }
   }
 
-  calculateScore() {
-   this.score = (this.literal.length - this.wrongGuesses) * (Date.now() - this.timerStart) / 1000; 
-  }
+  calculateScore(won) {
+    
+    if(!won){
+      return this.score
+    }
 
-  printScore() {
-    this.calculateScore();
-    this.highScoreList.innerHTML = `<li class="game__highScore--list--item">${this.playerName} - ${this.score}</li>`;
+    this.wordScore = this.literal.length - this.wrongGuesses;
+
+    this.score.push({playerName: this.playerName, wordScore: this.wordScore, wordLiteral: this.literal});
+
+    this.score.sort((a, b) => {
+      return b.wordScore - a.wordScore;
+    });
+
+    if(this.score.length > 10){
+      this.score.splice(10, 1);
+    }
+    
+    this.saveScore();
+
+    return this.score;
+
   }
 
   saveState() {
@@ -86,6 +102,10 @@ export class Word {
       timerStart: this.timerStart, 
       playerName: this.playerName
     }));
+  }
+
+  saveScore() {
+    localStorage.setItem("score", JSON.stringify(this.score));
   }
 
   clearState(){

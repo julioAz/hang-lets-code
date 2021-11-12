@@ -6,6 +6,7 @@ export class GameController {
     this.view.bindPlay(this.handlePlay);
     this.view.bindLetterGuess(this.handleLetterGuess);
     this.view.bindWordGuess(this.handleWordGuess);
+    this.view.displayHighScore(this.word.score);
   }
 
   handleLettersListChange = (letters, wrongGuesses) => {
@@ -38,28 +39,23 @@ export class GameController {
   };
 
   handleWordGuess = (wordGuess) => {
-    this.view.displayResult(wordGuess === this.word.literal, this.word.literal);
+    this.handleGameResult(wordGuess === this.word.literal);
   };
 
-  handleGameWon = () => {
-    this.view.displayResult(true, this.word.literal);
-    this.word.calculateScore();
-    this.word.clearState();
-  }
-
-  handleGameLost = () => {
-    this.view.displayResult(false, this.word.literal);
+  handleGameResult = (won) => {
+    const score = this.word.calculateScore(won);
+    this.view.displayResult(won, this.word.literal, score);
     this.word.clearState();
   }
 
   #evaluateGame = () => {
     
     if (this.word.wrongGuesses >= 5) {
-      this.handleGameLost();
+      this.handleGameResult(false);
     }
 
     if (this.word.letters.every((letter) => letter.isGuessed)) {
-      this.handleGameWon();
+      this.handleGameResult(true);
     }
   };
 }

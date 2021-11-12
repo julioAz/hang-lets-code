@@ -118,7 +118,7 @@ export class DOM {
     this.displayHangman(wrongGuesses);
   }
 
-  displayResult(won, correctWordLiteral) {
+  displayResult(won, correctWordLiteral, highScore) {
     this.displayFrame("end");
 
     this.frameEndResultImg.src = won
@@ -128,6 +128,15 @@ export class DOM {
     this.frameEndResult.innerHTML = won ? "YOU WON" : "YOU LOSE";
     this.frameEndResult.classList.add(`game__result--${won ? 'won' : 'lost'}`);
     this.frameEndCorrectWord.innerHTML = correctWordLiteral;
+    this.displayHighScore(highScore);
+  }
+
+  displayHighScore(score) {
+    this.highScoreList.innerHTML = "";
+
+    score.forEach(wordScore => {
+      this.printScore(wordScore);
+    });
   }
 
   #resetGame () {
@@ -139,4 +148,9 @@ export class DOM {
 
     this.wordGuessForm.wordGuessInput.value = "";
   }
+
+  printScore(gameScore) {
+    this.highScoreList.insertAdjacentHTML("beforeend", `<li class="game__highScore--list--item">${gameScore.wordLiteral} - ${gameScore.playerName} - ${gameScore.wordScore}</li>`); 
+  }
+
 }

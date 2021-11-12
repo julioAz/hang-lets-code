@@ -10,6 +10,8 @@
   --clr-result-lost: #da3e3e;
 
   --ff-sans: Arial, Helvetica, sans-serif;
+
+  --game-height: 30rem
 }
 
 /* -------------------------------------------------------- */
@@ -26,7 +28,7 @@ body {
   font-family: var(--ff-sans);
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   width: 100vw;
@@ -62,12 +64,23 @@ button:disabled {
 }
 
 /* -------------------------------------------------------- */
+/* Section -  */
+section {
+  display: flex;
+  flex-direction: row-reverse; 
+  align-items: center;
+  
+}
+
+/* -------------------------------------------------------- */
+
+/* -------------------------------------------------------- */
 /* Container - Centralized box */
 .container {
   position: relative;
 
   width: 50rem;
-  height: 30rem;
+  min-height: var(--game-height);
 }
 
 /* -------------------------------------------------------- */
@@ -193,9 +206,17 @@ button:disabled {
   border: 1px solid var(--clr-dark);
 }
 
+.game__highScore {
+  box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+  background-color: var(--clr-secondary);
+  width: 30%;
+  min-height: var(--game-height);
+  text-align: left;
+  padding: 15px;
+}
+
 .game__highScore--list {
   list-style: none;
   font-size: 1rem;
-  text-align: center;
   margin: 1rem auto;
 }

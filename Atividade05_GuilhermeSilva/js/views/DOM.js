@@ -24,14 +24,13 @@ export class DOM {
   }
 
   bindPlay(handler) {
-
     [this.btnPlay, this.btnPlayAgain].forEach((button) => {
       button.addEventListener("click", async (event) => {
         event.preventDefault();
-        
+
         const playerName = this.inputPlayerName.value || "Player";
 
-        if (button.id === 'btnPlayAgain') {
+        if (button.id === "btnPlayAgain") {
           this.#resetGame();
         }
 
@@ -41,19 +40,19 @@ export class DOM {
   }
 
   bindLetterGuess(handler) {
-    this.gameKeyboard.addEventListener('click', event => {
+    this.gameKeyboard.addEventListener("click", (event) => {
       const { target } = event;
 
-      if (target.classList.contains('game__key')) {
+      if (target.classList.contains("game__key")) {
         handler(target.id);
 
-        target.classList.add('game__key--disabled');
+        target.classList.add("game__key--disabled");
       }
     });
   }
 
-  bindWordGuess (handler) {
-    this.wordGuessForm.addEventListener("submit", event => {
+  bindWordGuess(handler) {
+    this.wordGuessForm.addEventListener("submit", (event) => {
       event.preventDefault();
 
       handler(event.target.wordGuessInput.value.toUpperCase());
@@ -63,13 +62,13 @@ export class DOM {
   createKeyboard() {
     const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-    letras.forEach(letra => {
+    letras.forEach((letra) => {
       let botao = document.createElement("button");
-      botao.setAttribute('class', 'game__key');
+      botao.setAttribute("class", "game__key");
       let letraTexto = document.createTextNode(letra);
-      
+
       botao.appendChild(letraTexto);
-      botao.setAttribute('id', `${letra.toUpperCase()}`);
+      botao.setAttribute("id", `${letra.toUpperCase()}`);
 
       this.gameKeyboard.appendChild(botao);
     });
@@ -96,14 +95,13 @@ export class DOM {
   }
 
   displayWord(letters) {
-    console.log(letters);
-
-    this.gameWord.innerHTML = letters.map((letter) => {
+    this.gameWord.innerHTML = letters
+      .map((letter) => {
         return `
           <li class="game__letter">${letter.isGuessed ? letter.char : ""}</li>
         `;
       }, "")
-      .join('');
+      .join("");
   }
 
   displayHangman(wrongGuesses) {
@@ -121,12 +119,10 @@ export class DOM {
   displayResult(won, correctWordLiteral, highScore) {
     this.displayFrame("end");
 
-    this.frameEndResultImg.src = won
-      ? "./img/luis.png"
-      : "./img/cris.png";
+    this.frameEndResultImg.src = won ? "./img/luis.png" : "./img/cris.png";
 
     this.frameEndResult.innerHTML = won ? "YOU WON" : "YOU LOSE";
-    this.frameEndResult.classList.add(`game__result--${won ? 'won' : 'lost'}`);
+    this.frameEndResult.classList.add(`game__result--${won ? "won" : "lost"}`);
     this.frameEndCorrectWord.innerHTML = correctWordLiteral;
     this.displayHighScore(highScore);
   }
@@ -134,23 +130,30 @@ export class DOM {
   displayHighScore(score) {
     this.highScoreList.innerHTML = "";
 
-    score.forEach(wordScore => {
+    score.forEach((wordScore) => {
       this.printScore(wordScore);
     });
   }
 
-  #resetGame () {
-    this.frameEndResult.classList.remove('game__result--won', 'game__result--lost');
+  printScore(gameScore) {
+    this.highScoreList.insertAdjacentHTML(
+      "beforeend",
+      `<li class="game__highScore--list--item">
+        ${gameScore.wordLiteral} - ${gameScore.playerName} - ${gameScore.wordScore}
+      </li>`
+    );
+  }
 
-    document.querySelectorAll('.game__key').forEach(button => {
-      button.classList.remove('game__key--disabled');
+  #resetGame() {
+    this.frameEndResult.classList.remove(
+      "game__result--won",
+      "game__result--lost"
+    );
+
+    document.querySelectorAll(".game__key").forEach((button) => {
+      button.classList.remove("game__key--disabled");
     });
 
     this.wordGuessForm.wordGuessInput.value = "";
   }
-
-  printScore(gameScore) {
-    this.highScoreList.insertAdjacentHTML("beforeend", `<li class="game__highScore--list--item">${gameScore.wordLiteral} - ${gameScore.playerName} - ${gameScore.wordScore}</li>`); 
-  }
-
 }

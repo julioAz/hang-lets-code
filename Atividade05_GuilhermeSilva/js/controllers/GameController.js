@@ -6,6 +6,7 @@ export class GameController {
     this.view.bindPlay(this.handlePlay);
     this.view.bindLetterGuess(this.handleLetterGuess);
     this.view.bindWordGuess(this.handleWordGuess);
+
     this.view.displayHighScore(this.word.score);
   }
 
@@ -46,10 +47,9 @@ export class GameController {
     const score = this.word.calculateScore(won);
     this.view.displayResult(won, this.word.literal, score);
     this.word.clearState();
-  }
+  };
 
   #evaluateGame = () => {
-    
     if (this.word.wrongGuesses >= 5) {
       this.handleGameResult(false);
     }

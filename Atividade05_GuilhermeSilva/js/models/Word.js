@@ -1,41 +1,39 @@
+import { randomPokemon } from "../services/loadPokemons.js";
+
 export class Word {
-  #localToken;
-  #tokenExists;
-  static ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  static BASE_URL = "https://pokeapi.co/api/v2/pokemon";
-  static maxPokemons = 150 ;
+  static SCORE_TOKEN = "grupo5-egjkw_score";
+  static STATE_TOKEN = "grupo5-egjkw_state";
+  static POKEMONS_TOKEN = "grupo5-egjkw_pokemons";
+  static POKEMONS_API_URL = "https://pokeapi.co/api/v2/pokemon";
+  static POKEMONS_MAX_NUMBER = 150;
 
   constructor() {
     this.pokemons = null;
-    this.#localToken = "PROJETO__GRUPO-LETSCODE";
-    this.#tokenExists = localStorage.getItem(this.#localToken);
-    this.score = JSON.parse(localStorage.getItem("score") ?? "[]" );
+    this.score = JSON.parse(localStorage.getItem(Word.SCORE_TOKEN) ?? "[]");
   }
 
   async init(playerName) {
+    const gameState = JSON.parse(
+      localStorage.getItem(Word.STATE_TOKEN) ?? "null"
+    );
 
-    const gameState = JSON.parse(localStorage.getItem("gameState") ?? "null");
-    
-    if(gameState){
+    if (gameState) {
       this.playerName = gameState.playerName;
       this.literal = gameState.literal;
       this.wrongGuesses = gameState.wrongGuesses;
       this.letters = gameState.letters;
       this.timerStart = gameState.timerStart;
 
-      return
+      return;
     }
-
-    this.pokemons = JSON.parse(localStorage.getItem(this.#localToken));
-    const randomPokemon = this.pokemons[Math.floor(Math.random() * (Word.maxPokemons - 1))].name.toUpperCase();
 
     this.playerName = playerName;
 
-    this.literal = randomPokemon;
+    this.literal = await randomPokemon();
 
     this.wrongGuesses = 0;
 
-    this.letters = Array.from(randomPokemon).map((letter) => {
+    this.letters = Array.from(this.literal).map((letter) => {
       return {
         char: letter,
         isGuessed: false,
@@ -43,73 +41,81 @@ export class Word {
     });
 
     this.timerStart = Date.now();
-
   }
 
-  async loadPokemons () {
-    if (!this.#tokenExists) {
-      const poke = [];
+  // async loadPokemons() {
+  //   let pokemons = JSON.parse(
+  //     localStorage.getItem(Word.POKEMONS_TOKEN) ?? "[]"
+  //   );
 
-      for (let i = 1, len = Word.maxPokemons; i < len; i++) {
-        poke.push(
-          fetch(`${Word.BASE_URL}/${i}`)
-            .then(response => response.json())
-            .then(pokemon => ({
-              id: i, name: pokemon.name
-            }))
-        );
-      }
+  //   if (pokemons.length) {
+  //     return pokemons;
+  //   }
 
-      const pokemons = await Promise.all(poke);
+  //   const pokemonsJobs = [];
 
-      localStorage.setItem(this.#localToken, JSON.stringify(pokemons));
+  //   for (let i = 1; i < Word.POKEMONS_MAX_NUMBER; ++i) {
+  //     pokemonsJobs.push(
+  //       fetch(`${Word.POKEMONS_API_URL}/${i}`)
+  //         .then((response) => response.json())
+  //         .then((pokemon) => ({
+  //           id: i,
+  //           name: pokemon.name,
+  //         }))
+  //     );
+  //   }
 
-      return pokemons;
-    } else {
-      return JSON.parse(this.#tokenExists);
-    }
-  }
+  //   pokemons = await Promise.all(pokemonsJobs);
+
+  //   localStorage.setItem(Word.POKEMONS_TOKEN, JSON.stringify(pokemons));
+
+  //   return pokemons;
+  // }
 
   calculateScore(won) {
-    
-    if(!won){
-      return this.score
+    if (!won) {
+      return this.score;
     }
 
     this.wordScore = this.literal.length - this.wrongGuesses;
 
-    this.score.push({playerName: this.playerName, wordScore: this.wordScore, wordLiteral: this.literal});
+    this.score.push({
+      playerName: this.playerName,
+      wordScore: this.wordScore,
+      wordLiteral: this.literal,
+    });
 
     this.score.sort((a, b) => {
       return b.wordScore - a.wordScore;
     });
 
-    if(this.score.length > 10){
+    if (this.score.length > 10) {
       this.score.splice(10, 1);
     }
-    
+
     this.saveScore();
 
     return this.score;
-
-  }
-
-  saveState() {
-    localStorage.setItem("gameState", JSON.stringify({
-      literal: this.literal,
-      wrongGuesses: this.wrongGuesses,
-      letters: this.letters,
-      timerStart: this.timerStart, 
-      playerName: this.playerName
-    }));
   }
 
   saveScore() {
-    localStorage.setItem("score", JSON.stringify(this.score));
+    localStorage.setItem(Word.SCORE_TOKEN, JSON.stringify(this.score));
   }
 
-  clearState(){
-    localStorage.removeItem("gameState");
+  saveState() {
+    localStorage.setItem(
+      Word.STATE_TOKEN,
+      JSON.stringify({
+        literal: this.literal,
+        wrongGuesses: this.wrongGuesses,
+        letters: this.letters,
+        timerStart: this.timerStart,
+        playerName: this.playerName,
+      })
+    );
   }
 
+  clearState() {
+    localStorage.removeItem(Word.STATE_TOKEN);
+  }
 }

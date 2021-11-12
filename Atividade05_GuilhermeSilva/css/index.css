@@ -11,7 +11,7 @@
 
   --ff-sans: Arial, Helvetica, sans-serif;
 
-  --game-height: 30rem
+  --game-height: 30rem;
 }
 
 /* -------------------------------------------------------- */
@@ -64,12 +64,11 @@ button:disabled {
 }
 
 /* -------------------------------------------------------- */
-/* Section -  */
-section {
+/* Main  */
+main {
   display: flex;
-  flex-direction: row-reverse; 
+  flex-direction: row-reverse;
   align-items: center;
-  
 }
 
 /* -------------------------------------------------------- */
@@ -165,7 +164,7 @@ section {
 }
 
 .game__key--disabled {
-  opacity: .8;
+  opacity: 0.8;
   pointer-events: none;
 }
 

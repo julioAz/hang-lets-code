@@ -43,35 +43,6 @@ export class Word {
     this.timerStart = Date.now();
   }
 
-  // async loadPokemons() {
-  //   let pokemons = JSON.parse(
-  //     localStorage.getItem(Word.POKEMONS_TOKEN) ?? "[]"
-  //   );
-
-  //   if (pokemons.length) {
-  //     return pokemons;
-  //   }
-
-  //   const pokemonsJobs = [];
-
-  //   for (let i = 1; i < Word.POKEMONS_MAX_NUMBER; ++i) {
-  //     pokemonsJobs.push(
-  //       fetch(`${Word.POKEMONS_API_URL}/${i}`)
-  //         .then((response) => response.json())
-  //         .then((pokemon) => ({
-  //           id: i,
-  //           name: pokemon.name,
-  //         }))
-  //     );
-  //   }
-
-  //   pokemons = await Promise.all(pokemonsJobs);
-
-  //   localStorage.setItem(Word.POKEMONS_TOKEN, JSON.stringify(pokemons));
-
-  //   return pokemons;
-  // }
-
   calculateScore(won) {
     if (!won) {
       return this.score;

@@ -3,12 +3,8 @@ import { randomPokemon } from "../services/loadPokemons.js";
 export class Word {
   static SCORE_TOKEN = "grupo5-egjkw_score";
   static STATE_TOKEN = "grupo5-egjkw_state";
-  static POKEMONS_TOKEN = "grupo5-egjkw_pokemons";
-  static POKEMONS_API_URL = "https://pokeapi.co/api/v2/pokemon";
-  static POKEMONS_MAX_NUMBER = 150;
 
   constructor() {
-    this.pokemons = null;
     this.score = JSON.parse(localStorage.getItem(Word.SCORE_TOKEN) ?? "[]");
   }
 
@@ -42,35 +38,6 @@ export class Word {
 
     this.timerStart = Date.now();
   }
-
-  // async loadPokemons() {
-  //   let pokemons = JSON.parse(
-  //     localStorage.getItem(Word.POKEMONS_TOKEN) ?? "[]"
-  //   );
-
-  //   if (pokemons.length) {
-  //     return pokemons;
-  //   }
-
-  //   const pokemonsJobs = [];
-
-  //   for (let i = 1; i < Word.POKEMONS_MAX_NUMBER; ++i) {
-  //     pokemonsJobs.push(
-  //       fetch(`${Word.POKEMONS_API_URL}/${i}`)
-  //         .then((response) => response.json())
-  //         .then((pokemon) => ({
-  //           id: i,
-  //           name: pokemon.name,
-  //         }))
-  //     );
-  //   }
-
-  //   pokemons = await Promise.all(pokemonsJobs);
-
-  //   localStorage.setItem(Word.POKEMONS_TOKEN, JSON.stringify(pokemons));
-
-  //   return pokemons;
-  // }
 
   calculateScore(won) {
     if (!won) {
